@@ -36,23 +36,24 @@
         .fade-in { animation: fadeIn 0.25s ease-out forwards; }
         @keyframes fadeIn { from { opacity: 0; transform: translateY(6px); } to { opacity: 1; transform: translateY(0); } }
 
-        /* --- Pure White Layout Preloader --- */
-        #preloader {
+        /* --- Fullscreen Interactive Troll Landing Page --- */
+        #landingPage {
             position: fixed;
             inset: 0;
-            background-color: #ffffff; /* Pure white start */
+            background-color: #ffffff;
             z-index: 100;
             display: flex;
+            flex-direction: column;
             align-items: center;
             justify-content: center;
-            overflow: hidden;
+            opacity: 1;
+            transition: opacity 0.4s ease-out;
         }
 
-        /* Typing Container */
+        /* Pure Intro Typography Typing */
         .typewriter-container {
             overflow: hidden;
             white-space: nowrap;
-            margin: 0 auto;
             width: 0;
             animation: typingText 1.2s steps(15, end) forwards;
         }
@@ -60,50 +61,59 @@
         .typewriter-container h1 {
             font-family: 'Playfair Display', serif;
             font-style: italic;
-            font-size: 2.2rem;
+            font-size: 2.5rem;
             font-weight: 500;
             letter-spacing: -0.01em;
-            color: #2c2c27; /* Dark beige/charcoal tone */
+            color: #2c2c27;
         }
 
-        /* Right-to-Left Sweep Panel using Brand Beige */
-        .brand-sweep-panel {
+        /* Troll Interaction Window */
+        #trollBox {
+            opacity: 0;
+            transform: scale(0.95);
+            transition: all 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
+            display: none;
+        }
+
+        #runawayBtn {
             position: absolute;
-            inset: 0;
-            background-color: #fbfaf7; /* Matches index background */
-            transform: translateX(100%);
-            z-index: 105;
-            pointer-events: none;
-            transition: transform 0.75s cubic-bezier(0.76, 0, 0.24, 1);
+            transition: all 0.15s ease-out;
+            white-space: nowrap;
         }
 
-        /* Timing Functions */
         @keyframes typingText { 
             from { width: 0; } 
             to { width: 100%; } 
         }
-
-        /* Active Sweep Triggers */
-        .execute-sweep { transform: translateX(0%); }
-        .hide-loader-elements { opacity: 0; transition: opacity 0.25s ease-out; }
     </style>
 </head>
 <body class="min-h-screen flex flex-col justify-between p-4 md:py-6">
 
-    <!-- Cinematic Custom Preloader Screen -->
-    <div id="preloader">
-        <!-- The brand beige block container that sweeps Right to Left -->
-        <div class="brand-sweep-panel" id="sweepPanel"></div>
-        
-        <!-- Typography Element Wrapper -->
-        <div class="flex items-center justify-center relative z-10" id="loaderContent">
-            <div class="typewriter-container">
-                <h1>aianawrites</h1>
+    <!-- Troll Gate Landing Page Layout -->
+    <div id="landingPage">
+        <!-- Step 1: Clean dynamic typing logo element -->
+        <div id="landingLogo" class="typewriter-container">
+            <h1>aianawrites</h1>
+        </div>
+
+        <!-- Step 2: The Question Frame prompt matrix -->
+        <div id="trollBox" class="text-center max-w-xs px-6 py-8 border border-brand-border bg-white rounded-2xl shadow-xl flex flex-col items-center relative min-h-[220px]">
+            <h2 id="questionHeading" class="text-base font-bold text-stone-800 tracking-tight mb-2">May tanong ka ba?</h2>
+            <p id="trollSubtext" class="text-[11px] text-stone-400 font-medium mb-6">Paki-click ang "Yes" para makapasok sa chat panel.</p>
+            
+            <!-- Button Container Panel bounds -->
+            <div id="btnField" class="w-full h-12 relative flex items-center justify-center">
+                <button id="runawayBtn" 
+                        onmouseover="teleportButton()" 
+                        onclick="handleTrollClick()" 
+                        class="px-5 py-2 bg-stone-900 hover:bg-stone-800 text-white font-bold text-xs rounded-xl shadow-md">
+                    Yes
+                </button>
             </div>
         </div>
     </div>
 
-    <!-- Main Chat Workspace -->
+    <!-- Main Chat Workspace Layout Container -->
     <div class="w-full max-w-md mx-auto flex flex-col h-[88vh] bg-white border border-brand-border rounded-2xl shadow-sm overflow-hidden">
         
         <!-- Top Navigation Header -->
@@ -164,33 +174,89 @@
         const backBtn = document.getElementById('backBtn');
         const userInput = document.getElementById('userInput');
 
-        // Cinematic Sequence Timers for Clean Typing Reveal
+        // Landing Page UI variables
+        const landingLogo = document.getElementById('landingLogo');
+        const trollBox = document.getElementById('trollBox');
+        const runawayBtn = document.getElementById('runawayBtn');
+        const questionHeading = document.getElementById('questionHeading');
+        const trollSubtext = document.getElementById('trollSubtext');
+
+        let clickCount = 0;
+        let isClickableMode = false;
+
         window.addEventListener('DOMContentLoaded', () => {
             renderMainMenu();
             
-            // Wait right after text finishes typing (1.2s typing + a tiny pause)
+            // Wait for logo text to complete typing sequence
             setTimeout(() => {
-                const sweepPanel = document.getElementById('sweepPanel');
-                const loader = document.getElementById('preloader');
-                const loaderContent = document.getElementById('loaderContent');
+                landingLogo.style.display = 'none';
+                trollBox.style.display = 'flex';
                 
-                // Fire right-to-left background sweep overlay
-                sweepPanel.classList.add('execute-sweep');
-                
-                // Midway through transition mask, swap hidden background and wipe typography nodes
                 setTimeout(() => {
-                    loaderContent.classList.add('hide-loader-elements');
-                    loader.style.backgroundColor = '#fbfaf7';
-                }, 320);
-
-                // Entire screen wipe complete: drop preloader node structure
-                setTimeout(() => {
-                    loader.remove();
-                    document.body.style.overflow = 'auto';
-                }, 750);
-
-            }, 1500);
+                    trollBox.style.opacity = '1';
+                    trollBox.style.transform = 'scale(1)';
+                    resetButtonToCenter();
+                }, 50);
+            }, 1400);
         });
+
+        // Makes the button hop away when they try to mouse over or touch it
+        function teleportButton() {
+            if (isClickableMode) return; // Stop running away once troll steps finish
+
+            const container = document.getElementById('btnField');
+            // Allow expansion outside bounding container for a harder challenge
+            const maxX = 120; 
+            const maxY = 180;
+
+            // Generate unpredictable negative or positive offsets
+            const randomX = (Math.random() - 0.5) * maxX;
+            const randomY = (Math.random() - 0.5) * maxY;
+
+            runawayBtn.style.transform = `translate(${randomX}px, ${randomY}px)`;
+        }
+
+        // Catch touch mechanics for phone/mobile view screen behaviors
+        runawayBtn.addEventListener('touchstart', (e) => {
+            if (!isClickableMode) {
+                e.preventDefault(); // Intercept tap action
+                teleportButton();
+            }
+        });
+
+        function resetButtonToCenter() {
+            runawayBtn.style.transform = 'translate(0px, 0px)';
+        }
+
+        // Handles counting clicks if they successfully catch the moving target
+        function handleTrollClick() {
+            if (isClickableMode) {
+                // Finale phase execution click: collapse landing grid layout safely
+                const landingPage = document.getElementById('landingPage');
+                landingPage.style.opacity = '0';
+                setTimeout(() => {
+                    landingPage.remove();
+                    document.body.style.overflow = 'auto';
+                }, 400);
+                return;
+            }
+
+            clickCount++;
+
+            if (clickCount < 3) {
+                // Keep moving on early hits
+                teleportButton();
+            } else {
+                // 3 Successful clicks met! Unlock clickable states and inject custom dialogue lines
+                isClickableMode = true;
+                resetButtonToCenter();
+                
+                questionHeading.textContent = "Beh, tanong ka lang?";
+                trollSubtext.textContent = "Sige na nga, click mo na ulit yung Yes. 👇";
+                runawayBtn.textContent = "Oo na, click mo na";
+                runawayBtn.className = "px-6 py-2.5 bg-emerald-600 hover:bg-emerald-500 text-white font-bold text-xs rounded-xl shadow-md transform scale-110 transition-all duration-300 animate-bounce";
+            }
+        }
 
         const itemRegistry = {
             'Introduction': 150, 'Background of the Study': 150, 'Statement of the Problem': 100,
