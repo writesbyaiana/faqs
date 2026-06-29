@@ -7,13 +7,16 @@
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@1,500;1,600&family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
     
     <script>
         tailwind.config = {
             theme: {
                 extend: {
-                    fontFamily: { sans: ['Plus Jakarta Sans', 'sans-serif'] },
+                    fontFamily: { 
+                        sans: ['Plus Jakarta Sans', 'sans-serif'],
+                        cursive: ['Playfair Display', 'serif']
+                    },
                     colors: {
                         brand: {
                             cream: '#fbfaf7',
@@ -33,11 +36,11 @@
         .fade-in { animation: fadeIn 0.25s ease-out forwards; }
         @keyframes fadeIn { from { opacity: 0; transform: translateY(6px); } to { opacity: 1; transform: translateY(0); } }
 
-        /* --- True SVG Continuous Cursive Writing Preloader --- */
+        /* --- Pure White Layout Preloader --- */
         #preloader {
             position: fixed;
             inset: 0;
-            background-color: #ffffff; /* Starts pure crisp white */
+            background-color: #ffffff; /* Pure white start */
             z-index: 100;
             display: flex;
             align-items: center;
@@ -45,86 +48,57 @@
             overflow: hidden;
         }
 
-        /* SVG Cursive Path Signature Setup */
-        .signature-svg {
-            width: 280px;
-            height: auto;
-            overflow: visible;
+        /* Typing Container */
+        .typewriter-container {
+            overflow: hidden;
+            white-space: nowrap;
+            margin: 0 auto;
+            width: 0;
+            animation: typingText 1.2s steps(15, end) forwards;
         }
 
-        .signature-path {
-            stroke: #2c2c27; /* Matches your brand index dark tone */
-            stroke-width: 2.5;
-            stroke-linecap: round;
-            stroke-linejoin: round;
-            fill: none;
-            /* Adjust stroke values to simulate an unbroken continuous fluid line */
-            stroke-dasharray: 1200;
-            stroke-dashoffset: 1200;
-            animation: writeSignature 1.8s cubic-bezier(0.45, 0, 0.55, 1) forwards;
+        .typewriter-container h1 {
+            font-family: 'Playfair Display', serif;
+            font-style: italic;
+            font-size: 2.2rem;
+            font-weight: 500;
+            letter-spacing: -0.01em;
+            color: #2c2c27; /* Dark beige/charcoal tone */
         }
 
-        /* Long dynamic tail running from the end of letter 's' to screen edge */
-        .extended-tail-wrapper {
-            position: absolute;
-            left: 50%;
-            top: 50%;
-            width: 100vw;
-            transform: translate(40px, 12px); /* Offsets right from the signature end */
-            z-index: 110;
-        }
-
-        .horizontal-tail-line {
-            width: 0vw;
-            height: 2.5px;
-            background-color: #2c2c27;
-            border-radius: 2px;
-            animation: stretchTailToEdge 0.8s cubic-bezier(0.25, 1, 0.5, 1) forwards;
-            animation-delay: 1.7s;
-        }
-
-        /* Right-to-Left Liquid Wipe Panel using brand beige */
+        /* Right-to-Left Sweep Panel using Brand Beige */
         .brand-sweep-panel {
             position: absolute;
             inset: 0;
-            background-color: #fbfaf7; /* Exact index background color */
+            background-color: #fbfaf7; /* Matches index background */
             transform: translateX(100%);
             z-index: 105;
             pointer-events: none;
-            transition: transform 0.8s cubic-bezier(0.76, 0, 0.24, 1);
+            transition: transform 0.75s cubic-bezier(0.76, 0, 0.24, 1);
         }
 
-        /* Animation Timers */
-        @keyframes writeSignature {
-            to { stroke-dashoffset: 0; }
-        }
-        @keyframes stretchTailToEdge {
-            to { width: 100vw; }
+        /* Timing Functions */
+        @keyframes typingText { 
+            from { width: 0; } 
+            to { width: 100%; } 
         }
 
-        /* Active Sweep Trigger Classes */
+        /* Active Sweep Triggers */
         .execute-sweep { transform: translateX(0%); }
-        .hide-loader-elements { opacity: 0; transition: opacity 0.3s ease-out; }
+        .hide-loader-elements { opacity: 0; transition: opacity 0.25s ease-out; }
     </style>
 </head>
 <body class="min-h-screen flex flex-col justify-between p-4 md:py-6">
 
     <!-- Cinematic Custom Preloader Screen -->
     <div id="preloader">
-        <!-- The brand beige container that sweeps from Right to Left -->
+        <!-- The brand beige block container that sweeps Right to Left -->
         <div class="brand-sweep-panel" id="sweepPanel"></div>
         
-        <!-- Live Signature Animation Container -->
-        <div class="flex flex-col items-center justify-center relative z-10" id="loaderContent">
-            <!-- Continuous SVG cursive layout trace -->
-            <svg class="signature-svg" viewBox="0 0 300 80">
-                <!-- Smooth custom handwritten mock path for 'aianawrites' -->
-                <path class="signature-path" d="M15,55 C30,35 40,25 50,55 C58,35 65,30 72,55 C78,45 82,40 88,55 C98,30 108,25 118,55 C124,40 132,45 138,55 C145,20 152,15 158,55 C164,40 170,45 178,55 C182,35 188,35 194,55 C200,20 206,20 212,55 C218,40 224,40 232,45 C240,45 248,30 256,40 C264,48 270,55 285,42" />
-            </svg>
-            
-            <!-- Long tail extending out from 's' directly to phone bounds -->
-            <div class="extended-tail-wrapper">
-                <div class="horizontal-tail-line"></div>
+        <!-- Typography Element Wrapper -->
+        <div class="flex items-center justify-center relative z-10" id="loaderContent">
+            <div class="typewriter-container">
+                <h1>aianawrites</h1>
             </div>
         </div>
     </div>
@@ -190,32 +164,32 @@
         const backBtn = document.getElementById('backBtn');
         const userInput = document.getElementById('userInput');
 
-        // Cinematic Sequence Timers for Right-to-Left Wipe
+        // Cinematic Sequence Timers for Clean Typing Reveal
         window.addEventListener('DOMContentLoaded', () => {
             renderMainMenu();
             
-            // 1. Wait for signature stroke (1.8s) + wait for tail line to reach edge (0.7s)
+            // Wait right after text finishes typing (1.2s typing + a tiny pause)
             setTimeout(() => {
                 const sweepPanel = document.getElementById('sweepPanel');
                 const loader = document.getElementById('preloader');
                 const loaderContent = document.getElementById('loaderContent');
                 
-                // Trigger right-to-left brand beige block wipe
+                // Fire right-to-left background sweep overlay
                 sweepPanel.classList.add('execute-sweep');
                 
-                // Midway through the swipe mask overlay, hide text/white layout quietly
+                // Midway through transition mask, swap hidden background and wipe typography nodes
                 setTimeout(() => {
                     loaderContent.classList.add('hide-loader-elements');
-                    loader.style.backgroundColor = '#fbfaf7'; // Swaps hidden base to beige seamlessly
-                }, 350);
+                    loader.style.backgroundColor = '#fbfaf7';
+                }, 320);
 
-                // Wipe complete: remove preloader node and return normal touch controls
+                // Entire screen wipe complete: drop preloader node structure
                 setTimeout(() => {
                     loader.remove();
                     document.body.style.overflow = 'auto';
-                }, 800);
+                }, 750);
 
-            }, 2400);
+            }, 1500);
         });
 
         const itemRegistry = {
