@@ -7,7 +7,7 @@
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@1,500;1,600&family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght=1,500;1,600&family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
     
     <script>
         tailwind.config = {
@@ -36,7 +36,7 @@
         .fade-in { animation: fadeIn 0.25s ease-out forwards; }
         @keyframes fadeIn { from { opacity: 0; transform: translateY(6px); } to { opacity: 1; transform: translateY(0); } }
 
-        /* --- Fullscreen Interactive Troll Landing Page --- */
+        /* --- Landing Screen Frame --- */
         #landingPage {
             position: fixed;
             inset: 0;
@@ -50,11 +50,19 @@
             transition: opacity 0.4s ease-out;
         }
 
-        /* Pure Intro Typography Typing */
+        /* Fixed center position box to prevent left-side shifting */
+        .logo-wrapper {
+            width: 240px; 
+            display: flex;
+            justify-content: center;
+        }
+
+        /* Tightly bound typing system tracking left-to-right strictly */
         .typewriter-container {
             overflow: hidden;
             white-space: nowrap;
             width: 0;
+            text-align: left;
             animation: typingText 1.2s steps(15, end) forwards;
         }
 
@@ -65,9 +73,9 @@
             font-weight: 500;
             letter-spacing: -0.01em;
             color: #2c2c27;
+            display: inline-block;
         }
 
-        /* Troll Interaction Window */
         #trollBox {
             opacity: 0;
             transform: scale(0.95);
@@ -77,7 +85,7 @@
 
         #runawayBtn {
             position: absolute;
-            transition: all 0.15s ease-out;
+            transition: transform 0.2s cubic-bezier(0.175, 0.885, 0.32, 1.275);
             white-space: nowrap;
         }
 
@@ -89,34 +97,34 @@
 </head>
 <body class="min-h-screen flex flex-col justify-between p-4 md:py-6">
 
-    <!-- Troll Gate Landing Page Layout -->
+    <!-- Interactive Troll Landing Screen -->
     <div id="landingPage">
-        <!-- Step 1: Clean dynamic typing logo element -->
-        <div id="landingLogo" class="typewriter-container">
-            <h1>aianawrites</h1>
+        <!-- Anchored logo wrapper container -->
+        <div id="landingLogo" class="logo-wrapper">
+            <div class="typewriter-container">
+                <h1>aianawrites</h1>
+            </div>
         </div>
 
-        <!-- Step 2: The Question Frame prompt matrix -->
-        <div id="trollBox" class="text-center max-w-xs px-6 py-8 border border-brand-border bg-white rounded-2xl shadow-xl flex flex-col items-center relative min-h-[220px]">
-            <h2 id="questionHeading" class="text-base font-bold text-stone-800 tracking-tight mb-2">May tanong ka ba?</h2>
+        <div id="trollBox" class="text-center w-full max-w-[280px] px-4 py-8 border border-brand-border bg-white rounded-2xl shadow-xl flex flex-col items-center relative min-h-[220px]">
+            <h2 id="questionHeading" class="text-sm font-bold text-stone-800 tracking-tight mb-2">May tanong ka ba?</h2>
             <p id="trollSubtext" class="text-[11px] text-stone-400 font-medium mb-6">Paki-click ang "Yes" para makapasok sa chat panel.</p>
             
-            <!-- Button Container Panel bounds -->
-            <div id="btnField" class="w-full h-12 relative flex items-center justify-center">
+            <div id="btnField" class="w-full h-14 relative flex items-center justify-center overflow-visible">
                 <button id="runawayBtn" 
                         onmouseover="teleportButton()" 
                         onclick="handleTrollClick()" 
-                        class="px-5 py-2 bg-stone-900 hover:bg-stone-800 text-white font-bold text-xs rounded-xl shadow-md">
+                        class="px-6 py-2 bg-stone-900 hover:bg-stone-800 text-white font-bold text-xs rounded-xl shadow-md">
                     Yes
                 </button>
             </div>
         </div>
     </div>
 
-    <!-- Main Chat Workspace Layout Container -->
+    <!-- Main Workspace Area -->
     <div class="w-full max-w-md mx-auto flex flex-col h-[88vh] bg-white border border-brand-border rounded-2xl shadow-sm overflow-hidden">
         
-        <!-- Top Navigation Header -->
+        <!-- Navigation Header Bar -->
         <div class="p-4 border-b border-brand-border bg-white flex items-center justify-between">
             <div class="flex items-center space-x-3">
                 <div class="w-9 h-9 rounded-full border border-brand-border overflow-hidden bg-stone-50">
@@ -132,7 +140,7 @@
             <a href="https://writesbyaiana.github.io/vouchesbyaiana/" target="_blank" class="text-[10px] font-bold text-brand-accent hover:underline">Vouches Hub</a>
         </div>
 
-        <!-- Scrollable Active Chat Feed -->
+        <!-- Chat Feed Interface -->
         <div id="chatWindow" class="flex-1 p-4 overflow-y-auto space-y-4 bg-brand-cream/30 chat-scroll">
             <div class="flex items-start space-x-2 max-w-[88%] fade-in">
                 <div class="p-3 bg-white border border-brand-border rounded-2xl rounded-tl-none text-xs leading-relaxed shadow-sm text-stone-700">
@@ -141,7 +149,7 @@
             </div>
         </div>
 
-        <!-- Dynamic Controls & Bottom Dock -->
+        <!-- Controls Input Panel Framework -->
         <div class="p-3 border-t border-brand-border bg-white space-y-2">
             <div class="flex justify-between items-center px-1">
                 <span id="menuTitle" class="text-[9px] font-bold uppercase tracking-widest text-stone-400">Quick Menu Options:</span>
@@ -150,12 +158,10 @@
                 </button>
             </div>
             
-            <!-- Quick Click Area -->
             <div id="interactiveDock" class="flex flex-col space-y-1.5 max-h-[160px] overflow-y-auto scrollbar">
                 <!-- JS Menu Injection -->
             </div>
 
-            <!-- Real-time Manual Chat Input Form -->
             <form id="chatForm" onsubmit="handleFormSubmit(event)" class="flex items-center space-x-2 pt-2 border-t border-stone-100">
                 <input type="text" id="userInput" placeholder="Ask me something (e.g., magkano chap 1, rush)..." class="flex-1 px-3 py-2 bg-stone-50 border border-brand-border rounded-xl text-xs focus:outline-none focus:border-amber-500 transition-colors">
                 <button type="submit" class="px-3 py-2 bg-stone-900 hover:bg-stone-800 text-white font-bold rounded-xl text-xs transition-colors">Send</button>
@@ -174,64 +180,56 @@
         const backBtn = document.getElementById('backBtn');
         const userInput = document.getElementById('userInput');
 
-        // Landing Page UI variables
         const landingLogo = document.getElementById('landingLogo');
         const trollBox = document.getElementById('trollBox');
         const runawayBtn = document.getElementById('runawayBtn');
         const questionHeading = document.getElementById('questionHeading');
         const trollSubtext = document.getElementById('trollSubtext');
 
-        let clickCount = 0;
+        let attempts = 0;
         let isClickableMode = false;
 
         window.addEventListener('DOMContentLoaded', () => {
             renderMainMenu();
             
-            // Wait for logo text to complete typing sequence
             setTimeout(() => {
-                landingLogo.style.display = 'none';
-                trollBox.style.display = 'flex';
+                landingLogo.style.opacity = '0';
                 
                 setTimeout(() => {
-                    trollBox.style.opacity = '1';
-                    trollBox.style.transform = 'scale(1)';
-                    resetButtonToCenter();
-                }, 50);
+                    landingLogo.style.display = 'none';
+                    trollBox.style.display = 'flex';
+                    
+                    setTimeout(() => {
+                        trollBox.style.opacity = '1';
+                        trollBox.style.transform = 'scale(1)';
+                    }, 50);
+                }, 200);
             }, 1400);
         });
 
-        // Makes the button hop away when they try to mouse over or touch it
+        const positions = [
+            { x: -70, y: -40 },
+            { x: 70, y: 40 }
+        ];
+
         function teleportButton() {
-            if (isClickableMode) return; // Stop running away once troll steps finish
-
-            const container = document.getElementById('btnField');
-            // Allow expansion outside bounding container for a harder challenge
-            const maxX = 120; 
-            const maxY = 180;
-
-            // Generate unpredictable negative or positive offsets
-            const randomX = (Math.random() - 0.5) * maxX;
-            const randomY = (Math.random() - 0.5) * maxY;
-
-            runawayBtn.style.transform = `translate(${randomX}px, ${randomY}px)`;
+            if (isClickableMode) return;
+            if (attempts < 2) {
+                const pos = positions[attempts];
+                runawayBtn.style.transform = `translate(${pos.x}px, ${pos.y}px)`;
+                attempts++;
+            }
         }
 
-        // Catch touch mechanics for phone/mobile view screen behaviors
         runawayBtn.addEventListener('touchstart', (e) => {
-            if (!isClickableMode) {
-                e.preventDefault(); // Intercept tap action
+            if (!isClickableMode && attempts < 2) {
+                e.preventDefault();
                 teleportButton();
             }
         });
 
-        function resetButtonToCenter() {
-            runawayBtn.style.transform = 'translate(0px, 0px)';
-        }
-
-        // Handles counting clicks if they successfully catch the moving target
         function handleTrollClick() {
             if (isClickableMode) {
-                // Finale phase execution click: collapse landing grid layout safely
                 const landingPage = document.getElementById('landingPage');
                 landingPage.style.opacity = '0';
                 setTimeout(() => {
@@ -241,20 +239,16 @@
                 return;
             }
 
-            clickCount++;
-
-            if (clickCount < 3) {
-                // Keep moving on early hits
+            if (attempts < 2) {
                 teleportButton();
             } else {
-                // 3 Successful clicks met! Unlock clickable states and inject custom dialogue lines
                 isClickableMode = true;
-                resetButtonToCenter();
+                runawayBtn.style.transform = 'translate(0px, 0px)';
                 
                 questionHeading.textContent = "Beh, tanong ka lang?";
-                trollSubtext.textContent = "Sige na nga, click mo na ulit yung Yes. 👇";
+                trollSubtext.textContent = "Oo na click mo na yan, sige na. 😂";
                 runawayBtn.textContent = "Oo na, click mo na";
-                runawayBtn.className = "px-6 py-2.5 bg-emerald-600 hover:bg-emerald-500 text-white font-bold text-xs rounded-xl shadow-md transform scale-110 transition-all duration-300 animate-bounce";
+                runawayBtn.className = "px-6 py-2.5 bg-emerald-600 hover:bg-emerald-500 text-white font-bold text-xs rounded-xl shadow-md transition-all duration-300 animate-bounce";
             }
         }
 
